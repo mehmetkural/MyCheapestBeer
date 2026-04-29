@@ -72,7 +72,8 @@
       flex-shrink: 0;
     }
 
-    .name { flex: 1; font-size: 1rem; color: #e8d0b0; }
+    .name { flex: 1; font-size: 1rem; color: #e8d0b0; text-decoration: none; cursor: pointer; }
+    .name:hover { color: #f5c842; text-decoration: underline; }
 
     .price {
       font-size: 1.1rem;
@@ -123,14 +124,14 @@
 
 <script>
 const places = [
-  { name: "Keesmann Bräu",      price: 3.90, approx: true  },
-  { name: "Mahr's Bräu",        price: 4.10, approx: true  },
-  { name: "Spezial",            price: 4.10, approx: true  },
-  { name: "Fässla Brauerei",    price: 4.20, approx: true  },
-  { name: "Schlenkerla",        price: 4.30, approx: false },
-  { name: "Klosterbräu",        price: 4.40, approx: true  },
-  { name: "Greifenklau Keller", price: 4.40, approx: true  },
-  { name: "Ambräusianum",       price: 4.80, approx: true  },
+  { name: "Keesmann Bräu",      price: 3.90, approx: true,  maps: "https://maps.google.com/?q=Keesmann+Br%C3%A4u+Bamberg" },
+  { name: "Mahr's Bräu",        price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Mahr%27s+Br%C3%A4u+Bamberg" },
+  { name: "Spezial",            price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Brauerei+Spezial+Bamberg" },
+  { name: "Fässla Brauerei",    price: 4.20, approx: true,  maps: "https://maps.google.com/?q=F%C3%A4ssla+Brauerei+Bamberg" },
+  { name: "Schlenkerla",        price: 4.30, approx: false, maps: "https://maps.google.com/?q=Schlenkerla+Bamberg" },
+  { name: "Klosterbräu",        price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Klosterbraeu+Bamberg" },
+  { name: "Greifenklau Keller", price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Greifenklau+Keller+Bamberg" },
+  { name: "Ambräusianum",       price: 4.80, approx: true,  maps: "https://maps.google.com/?q=Ambr%C3%A4usianum+Bamberg" },
 ];
 
 const i18n = {
@@ -159,7 +160,7 @@ function renderList() {
   document.getElementById('list').innerHTML = sorted.map((p, i) => `
     <div class="item">
       <span class="rank">${i + 1}.</span>
-      <span class="name">${p.name}</span>
+      <a class="name" href="${p.maps}" target="_blank" rel="noopener">${p.name}</a>
       <span class="price ${p.approx ? 'approx' : ''}">${p.approx ? '~' : ''}€${p.price.toFixed(2)}</span>
     </div>
   `).join('');
