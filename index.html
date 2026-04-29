@@ -72,8 +72,10 @@
       flex-shrink: 0;
     }
 
-    .name { flex: 1; font-size: 1rem; color: #e8d0b0; text-decoration: none; cursor: pointer; }
-    .name:hover { color: #f5c842; text-decoration: underline; }
+    .name-wrap { flex: 1; display: flex; flex-direction: column; gap: 0.15rem; text-decoration: none; }
+    .name { font-size: 1rem; color: #e8d0b0; }
+    .name-wrap:hover .name { color: #f5c842; text-decoration: underline; }
+    .beer-type { font-size: 0.72rem; color: #5a3a18; }
 
     .price {
       font-size: 1.1rem;
@@ -112,7 +114,7 @@
 <main>
   <div class="list-header">
     <span data-i18n="col_place"></span>
-    <span>0.5L</span>
+    <span data-i18n="col_price"></span>
   </div>
 
   <div id="list"></div>
@@ -124,33 +126,33 @@
 
 <script>
 const places = [
-  { name: "Keesmann Bräu",      price: 3.90, approx: true,  maps: "https://maps.google.com/?q=Keesmann+Br%C3%A4u+Bamberg" },
-  { name: "Mahr's Bräu",        price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Mahr%27s+Br%C3%A4u+Bamberg" },
-  { name: "Spezial",            price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Brauerei+Spezial+Bamberg" },
-  { name: "Fässla Brauerei",    price: 4.20, approx: true,  maps: "https://maps.google.com/?q=F%C3%A4ssla+Brauerei+Bamberg" },
-  { name: "Schlenkerla",        price: 4.30, approx: false, maps: "https://maps.google.com/?q=Schlenkerla+Bamberg" },
-  { name: "Klosterbräu",        price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Klosterbraeu+Bamberg" },
-  { name: "Greifenklau Keller", price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Greifenklau+Keller+Bamberg" },
-  { name: "Ambräusianum",       price: 4.80, approx: true,  maps: "https://maps.google.com/?q=Ambr%C3%A4usianum+Bamberg" },
+  { name: "Keesmann Bräu",      beer: "Herren Pils 0.5L",      price: 3.90, approx: true,  maps: "https://maps.google.com/?q=Keesmann+Br%C3%A4u+Bamberg" },
+  { name: "Mahr's Bräu",        beer: "Ungespundetes 0.5L",    price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Mahr%27s+Br%C3%A4u+Bamberg" },
+  { name: "Spezial",            beer: "Rauchbier Lager 0.5L",  price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Brauerei+Spezial+Bamberg" },
+  { name: "Fässla Brauerei",    beer: "Lagerbier 0.5L",        price: 4.20, approx: true,  maps: "https://maps.google.com/?q=F%C3%A4ssla+Brauerei+Bamberg" },
+  { name: "Schlenkerla",        beer: "Rauchbier Märzen 0.5L", price: 4.30, approx: false, maps: "https://maps.google.com/?q=Schlenkerla+Bamberg" },
+  { name: "Klosterbräu",        beer: "Lagerbier 0.5L",        price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Klosterbraeu+Bamberg" },
+  { name: "Greifenklau Keller", beer: "Kellerbier 0.5L",       price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Greifenklau+Keller+Bamberg" },
+  { name: "Ambräusianum",       beer: "Hausbier 0.5L",         price: 4.80, approx: true,  maps: "https://maps.google.com/?q=Ambr%C3%A4usianum+Bamberg" },
 ];
 
 const i18n = {
   tr: {
     title: "Bamberg En Ucuz Bira",
-    subtitle: "En ucuzdan en pahalıya — 0.5L Seidla",
-    col_place: "Mekan",
+    subtitle: "En ucuzdan en pahalıya",
+    col_place: "Mekan", col_price: "Fiyat",
     note: "~ işaretli fiyatlar tahminidir. Doğrulamak için mekana sorun.",
   },
   en: {
     title: "Bamberg Cheapest Beer",
-    subtitle: "Cheapest to most expensive — 0.5L Seidla",
-    col_place: "Pub",
+    subtitle: "Cheapest to most expensive",
+    col_place: "Pub", col_price: "Price",
     note: "Prices marked ~ are estimates. Verify on-site.",
   },
   de: {
     title: "Bamberg Günstigstes Bier",
-    subtitle: "Günstig bis teuer — 0.5L Seidla",
-    col_place: "Lokal",
+    subtitle: "Günstig bis teuer",
+    col_place: "Lokal", col_price: "Preis",
     note: "Mit ~ markierte Preise sind Schätzungen. Vor Ort prüfen.",
   }
 };
@@ -160,7 +162,10 @@ function renderList() {
   document.getElementById('list').innerHTML = sorted.map((p, i) => `
     <div class="item">
       <span class="rank">${i + 1}.</span>
-      <a class="name" href="${p.maps}" target="_blank" rel="noopener">${p.name}</a>
+      <a class="name-wrap" href="${p.maps}" target="_blank" rel="noopener">
+        <span class="name">${p.name}</span>
+        <span class="beer-type">${p.beer}</span>
+      </a>
       <span class="price ${p.approx ? 'approx' : ''}">${p.approx ? '~' : ''}€${p.price.toFixed(2)}</span>
     </div>
   `).join('');
