@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bamberg Bira Rehberi</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a1008;
+      color: #f0e6d3;
+      font-family: 'Georgia', serif;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #2d1a00;
+      border-bottom: 3px solid #c8860a;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      color: #f5c842;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      color: #c8a87a;
+      font-size: 1rem;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .card {
+      background: #2a1500;
+      border: 1px solid #5a3a10;
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: #c8860a; }
+
+    .icon { font-size: 2rem; flex-shrink: 0; }
+
+    .info h2 {
+      font-size: 1.2rem;
+      color: #f5c842;
+      margin-bottom: 0.3rem;
+    }
+
+    .info .address {
+      font-size: 0.85rem;
+      color: #a08060;
+      margin-bottom: 0.4rem;
+    }
+
+    .info p {
+      font-size: 0.92rem;
+      color: #d4b896;
+      line-height: 1.5;
+    }
+
+    .tags { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .tag {
+      background: #3d2200;
+      border: 1px solid #6b4510;
+      border-radius: 20px;
+      padding: 0.15rem 0.7rem;
+      font-size: 0.75rem;
+      color: #c8a87a;
+    }
+
+    .tag.highlight {
+      background: #5a3000;
+      border-color: #c8860a;
+      color: #f5c842;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #5a4030;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🍺 Bamberg Bira Rehberi</h1>
+  <p>Bamberg'de bira içilebilen en iyi yerler</p>
+</header>
+
+<main>
+
+  <div class="card">
+    <div class="icon">🏰</div>
+    <div class="info">
+      <h2>Schlenkerla</h2>
+      <div class="address">Dominikanerstraße 6, 96049 Bamberg</div>
+      <p>Bamberg'in en ünlü birahanesi. 1405'ten beri Rauchbier (tütsülenmiş bira) üretiyor. Tarihi ahşap iç mekan, otantik atmosfer.</p>
+      <div class="tags">
+        <span class="tag highlight">Rauchbier</span>
+        <span class="tag">Tarihi</span>
+        <span class="tag">Kendin Üretim</span>
+        <span class="tag">İç Mekan</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="icon">🏺</div>
+    <div class="info">
+      <h2>Spezial Keller</h2>
+      <div class="address">Obere Königstraße 10, 96052 Bamberg</div>
+      <p>İkinci büyük Rauchbier üreticisi. Şehir merkezine yakın, sade ve samimi ortam. Yerli halk arasında çok popüler.</p>
+      <div class="tags">
+        <span class="tag highlight">Rauchbier</span>
+        <span class="tag">Yerel Sevilen</span>
+        <span class="tag">Kendin Üretim</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="icon">🌳</div>
+    <div class="info">
+      <h2>Greifenklau Keller</h2>
+      <div class="address">Laurenzistraße 20, 96052 Bamberg</div>
+      <p>Tepede yer alan harika manzaralı bahçe. Bamberg çatıları ve katedrali görünüyor. Yaz akşamları için mükemmel.</p>
+      <div class="tags">
+        <span class="tag highlight">Biergarten</span>
+        <span class="tag">Panoramik Manzara</span>
+        <span class="tag">Yaz</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="icon">🍻</div>
+    <div class="info">
+      <h2>Fässla Brauerei</h2>
+      <div class="address">Obere Königstraße 19-21, 96052 Bamberg</div>
+      <p>Aile işletmesi, kendi biralarını üreten küçük bira evi. Lagerkeller ile birlikte güzel bir bahçesi var. Merkeze yürüme mesafesinde.</p>
+      <div class="tags">
+        <span class="tag highlight">Kendin Üretim</span>
+        <span class="tag">Aile İşletmesi</span>
+        <span class="tag">Bahçe</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="icon">🏠</div>
+    <div class="info">
+      <h2>Mahr's Bräu</h2>
+      <div class="address">Wunderburg 10, 96050 Bamberg</div>
+      <p>Şehir merkezinden biraz uzakta ama kesinlikle gitmeye değer. Ungespundetes (hafif, bulanık) birası ünlü. Samimi atmosfer.</p>
+      <div class="tags">
+        <span class="tag highlight">Ungespundetes</span>
+        <span class="tag">Kendin Üretim</span>
+        <span class="tag">Gizli Gem</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="icon">⛪</div>
+    <div class="info">
+      <h2>Klosterbräu</h2>
+      <div class="address">Obere Mühlbrücke 1-3, 96049 Bamberg</div>
+      <p>Bamberg'in en eski bira evi (1533). Eski manastır binasında tarihi ortam. Köprünün hemen yanında, şehir merkezinde.</p>
+      <div class="tags">
+        <span class="tag highlight">En Eski</span>
+        <span class="tag">1533</span>
+        <span class="tag">Kendin Üretim</span>
+        <span class="tag">Merkez</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="icon">🎭</div>
+    <div class="info">
+      <h2>Ambräusianum</h2>
+      <div class="address">Dominikanerstraße 10, 96049 Bamberg</div>
+      <p>Modern bira evi, geniş seçenek, turistik bölgede. Schlenkerla ile aynı sokakta. Büyük restoran alanı, müzik etkinlikleri.</p>
+      <div class="tags">
+        <span class="tag">Modern</span>
+        <span class="tag">Geniş Menü</span>
+        <span class="tag">Etkinlikler</span>
+        <span class="tag">Merkez</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="icon">🏔️</div>
+    <div class="info">
+      <h2>Keesmann Bräu</h2>
+      <div class="address">Wunderburg 5, 96050 Bamberg</div>
+      <p>Mahr's Bräu ile aynı mahallede, Wunderburg'da. Küçük, samimi, yerli halkın uğrak yeri. Kendi üretim Herren Pils birası popüler.</p>
+      <div class="tags">
+        <span class="tag highlight">Herren Pils</span>
+        <span class="tag">Kendin Üretim</span>
+        <span class="tag">Yerel</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Prost! 🍺 — Bamberg, Almanya</p>
+</footer>
+
+</body>
+</html>
