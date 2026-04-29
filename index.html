@@ -3,277 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bamberg Bira Rehberi</title>
+  <title>Bamberg – En Ucuz Bira</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #1a1008;
-      color: #f0e6d3;
+      background: #111;
+      color: #eee;
       font-family: 'Georgia', serif;
       min-height: 100vh;
     }
 
     header {
-      background: #2d1a00;
-      border-bottom: 3px solid #c8860a;
-      padding: 2rem 1rem 1.5rem;
-      text-align: center;
-      position: relative;
-    }
-
-    header h1 { font-size: 2.4rem; color: #f5c842; letter-spacing: 1px; }
-    header p { margin-top: 0.5rem; color: #c8a87a; font-size: 1rem; }
-
-    .lang-switcher {
-      position: absolute;
-      top: 1rem;
-      right: 1.2rem;
+      background: #1c1000;
+      border-bottom: 2px solid #b07800;
+      padding: 1.6rem 1.2rem 1.2rem;
       display: flex;
-      gap: 0.4rem;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
     }
+
+    header h1 { font-size: 1.5rem; color: #f5c842; }
+    header p  { font-size: 0.8rem; color: #886644; margin-top: 0.2rem; }
+
+    .lang-switcher { display: flex; gap: 0.4rem; }
 
     .lang-btn {
-      background: #3d2200;
-      border: 1px solid #6b4510;
-      border-radius: 6px;
-      color: #c8a87a;
-      cursor: pointer;
-      font-size: 0.8rem;
-      font-weight: bold;
-      padding: 0.3rem 0.6rem;
-      transition: all 0.15s;
-    }
-
-    .lang-btn:hover { border-color: #c8860a; color: #f5c842; }
-    .lang-btn.active { background: #5a3000; border-color: #c8860a; color: #f5c842; }
-
-    main { max-width: 900px; margin: 2.5rem auto; padding: 0 1rem; }
-
-    .card {
       background: #2a1500;
       border: 1px solid #5a3a10;
-      border-radius: 10px;
-      padding: 1.4rem 1.6rem;
-      margin-bottom: 1.2rem;
-      display: flex;
-      gap: 1.2rem;
-      align-items: flex-start;
-      transition: border-color 0.2s;
-    }
-
-    .card:hover { border-color: #c8860a; }
-    .icon { font-size: 2rem; flex-shrink: 0; }
-
-    .info h2 { font-size: 1.2rem; color: #f5c842; margin-bottom: 0.3rem; }
-    .info .address { font-size: 0.85rem; color: #a08060; margin-bottom: 0.4rem; }
-    .info p { font-size: 0.92rem; color: #d4b896; line-height: 1.5; }
-
-    .tags { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-
-    .tag {
-      background: #3d2200;
-      border: 1px solid #6b4510;
-      border-radius: 20px;
-      padding: 0.15rem 0.7rem;
-      font-size: 0.75rem;
+      border-radius: 5px;
       color: #c8a87a;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.25rem 0.55rem;
+    }
+    .lang-btn.active { background: #4a2800; border-color: #b07800; color: #f5c842; }
+
+    main { max-width: 560px; margin: 2rem auto; padding: 0 1rem; }
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #664422;
+      padding: 0 0.2rem 0.5rem;
+      border-bottom: 1px solid #2a1a00;
     }
 
-    .tag.highlight { background: #5a3000; border-color: #c8860a; color: #f5c842; }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 0.2rem;
+      border-bottom: 1px solid #1e1200;
+    }
 
-    footer { text-align: center; padding: 2rem; color: #5a4030; font-size: 0.8rem; }
+    .item:hover { background: #1a0e00; }
+
+    .rank {
+      color: #4a3020;
+      font-size: 0.8rem;
+      width: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .name { flex: 1; font-size: 1rem; color: #e8d0b0; }
+
+    .price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #f5c842;
+      text-align: right;
+      min-width: 60px;
+    }
+
+    .price.approx { color: #a08040; }
+
+    .note {
+      margin-top: 2rem;
+      font-size: 0.72rem;
+      color: #443322;
+      text-align: center;
+    }
+
+    footer { text-align: center; padding: 2rem; color: #332211; font-size: 0.75rem; }
   </style>
 </head>
 <body>
 
 <header>
+  <div>
+    <h1>🍺 <span data-i18n="title"></span></h1>
+    <p data-i18n="subtitle"></p>
+  </div>
   <div class="lang-switcher">
     <button class="lang-btn active" onclick="setLang('tr')">TR</button>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
     <button class="lang-btn" onclick="setLang('de')">DE</button>
   </div>
-  <h1>🍺 <span data-i18n="title"></span></h1>
-  <p data-i18n="subtitle"></p>
 </header>
 
 <main>
-
-  <div class="card">
-    <div class="icon">🏰</div>
-    <div class="info">
-      <h2>Schlenkerla</h2>
-      <div class="address">Dominikanerstraße 6, 96049 Bamberg</div>
-      <p data-i18n="schlenkerla"></p>
-      <div class="tags">
-        <span class="tag highlight">Rauchbier</span>
-        <span class="tag" data-i18n="tag_historic"></span>
-        <span class="tag" data-i18n="tag_own"></span>
-        <span class="tag" data-i18n="tag_indoor"></span>
-      </div>
-    </div>
+  <div class="list-header">
+    <span data-i18n="col_place"></span>
+    <span>0.5L</span>
   </div>
 
-  <div class="card">
-    <div class="icon">🏺</div>
-    <div class="info">
-      <h2>Spezial Keller</h2>
-      <div class="address">Obere Königstraße 10, 96052 Bamberg</div>
-      <p data-i18n="spezial"></p>
-      <div class="tags">
-        <span class="tag highlight">Rauchbier</span>
-        <span class="tag" data-i18n="tag_local"></span>
-        <span class="tag" data-i18n="tag_own"></span>
-      </div>
-    </div>
-  </div>
+  <div id="list"></div>
 
-  <div class="card">
-    <div class="icon">🌳</div>
-    <div class="info">
-      <h2>Greifenklau Keller</h2>
-      <div class="address">Laurenzistraße 20, 96052 Bamberg</div>
-      <p data-i18n="greifenklau"></p>
-      <div class="tags">
-        <span class="tag highlight" data-i18n="tag_biergarten"></span>
-        <span class="tag" data-i18n="tag_view"></span>
-        <span class="tag" data-i18n="tag_summer"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="icon">🍻</div>
-    <div class="info">
-      <h2>Fässla Brauerei</h2>
-      <div class="address">Obere Königstraße 19-21, 96052 Bamberg</div>
-      <p data-i18n="fassla"></p>
-      <div class="tags">
-        <span class="tag highlight" data-i18n="tag_own"></span>
-        <span class="tag" data-i18n="tag_family"></span>
-        <span class="tag" data-i18n="tag_garden"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="icon">🏠</div>
-    <div class="info">
-      <h2>Mahr's Bräu</h2>
-      <div class="address">Wunderburg 10, 96050 Bamberg</div>
-      <p data-i18n="mahrs"></p>
-      <div class="tags">
-        <span class="tag highlight">Ungespundetes</span>
-        <span class="tag" data-i18n="tag_own"></span>
-        <span class="tag" data-i18n="tag_hidden"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="icon">⛪</div>
-    <div class="info">
-      <h2>Klosterbräu</h2>
-      <div class="address">Obere Mühlbrücke 1-3, 96049 Bamberg</div>
-      <p data-i18n="kloster"></p>
-      <div class="tags">
-        <span class="tag highlight" data-i18n="tag_oldest"></span>
-        <span class="tag">1533</span>
-        <span class="tag" data-i18n="tag_own"></span>
-        <span class="tag" data-i18n="tag_center"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="icon">🎭</div>
-    <div class="info">
-      <h2>Ambräusianum</h2>
-      <div class="address">Dominikanerstraße 10, 96049 Bamberg</div>
-      <p data-i18n="ambrau"></p>
-      <div class="tags">
-        <span class="tag" data-i18n="tag_modern"></span>
-        <span class="tag" data-i18n="tag_menu"></span>
-        <span class="tag" data-i18n="tag_events"></span>
-        <span class="tag" data-i18n="tag_center"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="icon">🏔️</div>
-    <div class="info">
-      <h2>Keesmann Bräu</h2>
-      <div class="address">Wunderburg 5, 96050 Bamberg</div>
-      <p data-i18n="keesmann"></p>
-      <div class="tags">
-        <span class="tag highlight">Herren Pils</span>
-        <span class="tag" data-i18n="tag_own"></span>
-        <span class="tag" data-i18n="tag_local"></span>
-      </div>
-    </div>
-  </div>
-
+  <p class="note" data-i18n="note"></p>
 </main>
 
-<footer>
-  <p>Prost! 🍺 — Bamberg, Deutschland</p>
-</footer>
+<footer>Prost! 🍺 Bamberg</footer>
 
 <script>
+const places = [
+  { name: "Keesmann Bräu",      price: 3.90, approx: true  },
+  { name: "Mahr's Bräu",        price: 4.10, approx: true  },
+  { name: "Spezial",            price: 4.10, approx: true  },
+  { name: "Fässla Brauerei",    price: 4.20, approx: true  },
+  { name: "Schlenkerla",        price: 4.30, approx: false },
+  { name: "Klosterbräu",        price: 4.40, approx: true  },
+  { name: "Greifenklau Keller", price: 4.40, approx: true  },
+  { name: "Ambräusianum",       price: 4.80, approx: true  },
+];
+
 const i18n = {
   tr: {
-    title: "Bamberg Bira Rehberi",
-    subtitle: "Bamberg'de bira içilebilen en iyi yerler",
-    schlenkerla: "Bamberg'in en ünlü birahanesi. 1405'ten beri Rauchbier (tütsülenmiş bira) üretiyor. Tarihi ahşap iç mekan, otantik atmosfer.",
-    spezial: "İkinci büyük Rauchbier üreticisi. Şehir merkezine yakın, sade ve samimi ortam. Yerli halk arasında çok popüler.",
-    greifenklau: "Tepede yer alan harika manzaralı bahçe. Bamberg çatıları ve katedrali görünüyor. Yaz akşamları için mükemmel.",
-    fassla: "Aile işletmesi, kendi biralarını üreten küçük bira evi. Lagerkeller ile birlikte güzel bir bahçesi var. Merkeze yürüme mesafesinde.",
-    mahrs: "Şehir merkezinden biraz uzakta ama kesinlikle gitmeye değer. Ungespundetes (hafif, bulanık) birası ünlü. Samimi atmosfer.",
-    kloster: "Bamberg'in en eski bira evi (1533). Eski manastır binasında tarihi ortam. Köprünün hemen yanında, şehir merkezinde.",
-    ambrau: "Modern bira evi, geniş seçenek, turistik bölgede. Schlenkerla ile aynı sokakta. Büyük restoran alanı, müzik etkinlikleri.",
-    keesmann: "Mahr's Bräu ile aynı mahallede, Wunderburg'da. Küçük, samimi, yerli halkın uğrak yeri. Kendi üretim Herren Pils birası popüler.",
-    tag_historic: "Tarihi", tag_own: "Kendin Üretim", tag_indoor: "İç Mekan",
-    tag_local: "Yerel Sevilen", tag_biergarten: "Biergarten", tag_view: "Panoramik Manzara",
-    tag_summer: "Yaz", tag_family: "Aile İşletmesi", tag_garden: "Bahçe",
-    tag_hidden: "Gizli Gem", tag_oldest: "En Eski", tag_center: "Merkez",
-    tag_modern: "Modern", tag_menu: "Geniş Menü", tag_events: "Etkinlikler",
+    title: "Bamberg En Ucuz Bira",
+    subtitle: "En ucuzdan en pahalıya — 0.5L Seidla",
+    col_place: "Mekan",
+    note: "~ işaretli fiyatlar tahminidir. Doğrulamak için mekana sorun.",
   },
   en: {
-    title: "Bamberg Beer Guide",
-    subtitle: "Best places to drink beer in Bamberg",
-    schlenkerla: "Bamberg's most famous pub. Brewing Rauchbier (smoked beer) since 1405. Historic timber interior, authentic atmosphere.",
-    spezial: "The second major Rauchbier producer. Close to the city center, simple and friendly atmosphere. Very popular with locals.",
-    greifenklau: "Hilltop beer garden with stunning views of Bamberg's rooftops and cathedral. Perfect for summer evenings.",
-    fassla: "Family-run brewery with its own beers. Has a nice garden with a Lagerkeller. Walking distance from the center.",
-    mahrs: "A bit outside the center but absolutely worth the trip. Famous for its Ungespundetes (light, hazy) beer. Cozy vibe.",
-    kloster: "Bamberg's oldest pub (1533). Historic setting in a former monastery. Right next to the bridge, in the city center.",
-    ambrau: "Modern brewpub with wide selection, in the tourist area. On the same street as Schlenkerla. Large dining area, music events.",
-    keesmann: "In the Wunderburg neighborhood, near Mahr's Bräu. Small, cozy, a local favorite. Known for its Herren Pils.",
-    tag_historic: "Historic", tag_own: "Own Brewery", tag_indoor: "Indoor",
-    tag_local: "Local Favorite", tag_biergarten: "Biergarten", tag_view: "Panoramic View",
-    tag_summer: "Summer", tag_family: "Family-Run", tag_garden: "Garden",
-    tag_hidden: "Hidden Gem", tag_oldest: "Oldest", tag_center: "Central",
-    tag_modern: "Modern", tag_menu: "Wide Menu", tag_events: "Events",
+    title: "Bamberg Cheapest Beer",
+    subtitle: "Cheapest to most expensive — 0.5L Seidla",
+    col_place: "Pub",
+    note: "Prices marked ~ are estimates. Verify on-site.",
   },
   de: {
-    title: "Bamberg Bierführer",
-    subtitle: "Die besten Orte zum Biertrinken in Bamberg",
-    schlenkerla: "Bambergs berühmteste Wirtschaft. Seit 1405 wird hier Rauchbier gebraut. Historisches Holzinterieur, authentische Atmosphäre.",
-    spezial: "Der zweite große Rauchbierproduzent. Nah am Stadtzentrum, schlichte und gemütliche Atmosphäre. Bei Einheimischen sehr beliebt.",
-    greifenklau: "Biergarten auf dem Hügel mit herrlichem Blick auf Bambergs Dächer und den Dom. Ideal für Sommerabende.",
-    fassla: "Familienbrauerei mit eigenem Bier. Hat einen schönen Garten mit Lagerkeller. Fußläufig vom Zentrum.",
-    mahrs: "Etwas außerhalb des Zentrums, aber definitiv einen Besuch wert. Berühmt für das Ungespundete (leichtes, trübes Bier). Gemütlich.",
-    kloster: "Bambergs älteste Brauerei (1533). Historisches Ambiente in einem ehemaligen Kloster. Direkt an der Brücke, mitten in der Stadt.",
-    ambrau: "Modernes Brauhaus mit großer Auswahl, in der Touristenzone. In derselben Straße wie Schlenkerla. Großes Restaurant, Musikveranstaltungen.",
-    keesmann: "Im Wunderburg-Viertel, in der Nähe von Mahr's Bräu. Klein, gemütlich, ein Geheimtipp für Einheimische. Bekannt für Herren Pils.",
-    tag_historic: "Historisch", tag_own: "Eigenbrauerei", tag_indoor: "Innen",
-    tag_local: "Lokal beliebt", tag_biergarten: "Biergarten", tag_view: "Panoramablick",
-    tag_summer: "Sommer", tag_family: "Familienbetrieb", tag_garden: "Garten",
-    tag_hidden: "Geheimtipp", tag_oldest: "Älteste", tag_center: "Zentrum",
-    tag_modern: "Modern", tag_menu: "Große Auswahl", tag_events: "Veranstaltungen",
+    title: "Bamberg Günstigstes Bier",
+    subtitle: "Günstig bis teuer — 0.5L Seidla",
+    col_place: "Lokal",
+    note: "Mit ~ markierte Preise sind Schätzungen. Vor Ort prüfen.",
   }
 };
+
+function renderList() {
+  const sorted = [...places].sort((a, b) => a.price - b.price);
+  document.getElementById('list').innerHTML = sorted.map((p, i) => `
+    <div class="item">
+      <span class="rank">${i + 1}.</span>
+      <span class="name">${p.name}</span>
+      <span class="price ${p.approx ? 'approx' : ''}">${p.approx ? '~' : ''}€${p.price.toFixed(2)}</span>
+    </div>
+  `).join('');
+}
 
 function setLang(lang) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
@@ -284,6 +174,7 @@ function setLang(lang) {
   document.documentElement.lang = lang;
 }
 
+renderList();
 setLang('tr');
 </script>
 
