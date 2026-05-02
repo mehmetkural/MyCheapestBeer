@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bamberg – En Ucuz Bira</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,6 +13,8 @@
       color: #eee;
       font-family: 'Georgia', serif;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
@@ -28,6 +31,8 @@
     header h1 { font-size: 1.5rem; color: #f5c842; }
     header p  { font-size: 0.8rem; color: #886644; margin-top: 0.2rem; }
 
+    .controls { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+
     .lang-switcher { display: flex; gap: 0.4rem; }
 
     .lang-btn {
@@ -42,7 +47,20 @@
     }
     .lang-btn.active { background: #4a2800; border-color: #b07800; color: #f5c842; }
 
-    main { max-width: 560px; margin: 2rem auto; padding: 0 1rem; }
+    .view-btn {
+      background: #1a2800;
+      border: 1px solid #3a5a10;
+      border-radius: 5px;
+      color: #a8c87a;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.25rem 0.7rem;
+    }
+    .view-btn.active { background: #2a4000; border-color: #6a9a20; color: #c8f042; }
+
+    /* LIST VIEW */
+    #list-view { max-width: 560px; margin: 2rem auto; padding: 0 1rem; width: 100%; }
 
     .list-header {
       display: flex;
@@ -94,6 +112,28 @@
       text-align: center;
     }
 
+    /* MAP VIEW */
+    #map-view { display: none; flex: 1; flex-direction: column; }
+    #map-view.visible { display: flex; }
+    #map { flex: 1; min-height: calc(100vh - 90px); }
+
+    /* Leaflet popup dark theme */
+    .leaflet-popup-content-wrapper {
+      background: #1c1000;
+      border: 1px solid #b07800;
+      color: #e8d0b0;
+      border-radius: 6px;
+    }
+    .leaflet-popup-tip { background: #1c1000; }
+    .leaflet-popup-content { margin: 10px 14px; }
+    .popup-name { font-size: 1rem; color: #f5c842; font-weight: bold; }
+    .popup-beer { font-size: 0.75rem; color: #886644; margin-top: 2px; }
+    .popup-price { font-size: 1.1rem; color: #f5c842; margin-top: 4px; }
+    .popup-price.approx { color: #a08040; }
+    .popup-rank { font-size: 0.7rem; color: #664422; margin-top: 2px; }
+    .popup-maps { display: inline-block; margin-top: 6px; font-size: 0.72rem; color: #a8c87a; text-decoration: none; }
+    .popup-maps:hover { text-decoration: underline; }
+
     footer { text-align: center; padding: 2rem; color: #332211; font-size: 0.75rem; }
   </style>
 </head>
@@ -104,36 +144,43 @@
     <h1>🍺 <span data-i18n="title"></span></h1>
     <p data-i18n="subtitle"></p>
   </div>
-  <div class="lang-switcher">
-    <button class="lang-btn active" onclick="setLang('tr')">TR</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('de')">DE</button>
+  <div class="controls">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('tr')">TR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('de')">DE</button>
+    </div>
+    <button class="view-btn active" id="btn-list" onclick="setView('list')" data-i18n="btn_list"></button>
+    <button class="view-btn" id="btn-map" onclick="setView('map')" data-i18n="btn_map"></button>
   </div>
 </header>
 
-<main>
+<div id="list-view">
   <div class="list-header">
     <span data-i18n="col_place"></span>
     <span data-i18n="col_price"></span>
   </div>
-
   <div id="list"></div>
-
   <p class="note" data-i18n="note"></p>
-</main>
+</div>
+
+<div id="map-view">
+  <div id="map"></div>
+</div>
 
 <footer>Prost! 🍺 Bamberg</footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const places = [
-  { name: "Keesmann Bräu",      beer: "Herren Pils 0.5L",      price: 3.90, approx: true,  maps: "https://maps.google.com/?q=Keesmann+Br%C3%A4u+Bamberg" },
-  { name: "Mahr's Bräu",        beer: "Ungespundetes 0.5L",    price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Mahr%27s+Br%C3%A4u+Bamberg" },
-  { name: "Spezial",            beer: "Rauchbier Lager 0.5L",  price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Brauerei+Spezial+Bamberg" },
-  { name: "Fässla Brauerei",    beer: "Lagerbier 0.5L",        price: 4.20, approx: true,  maps: "https://maps.google.com/?q=F%C3%A4ssla+Brauerei+Bamberg" },
-  { name: "Schlenkerla",        beer: "Rauchbier Märzen 0.5L", price: 4.30, approx: false, maps: "https://maps.google.com/?q=Schlenkerla+Bamberg" },
-  { name: "Klosterbräu",        beer: "Lagerbier 0.5L",        price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Klosterbraeu+Bamberg" },
-  { name: "Greifenklau Keller", beer: "Kellerbier 0.5L",       price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Greifenklau+Keller+Bamberg" },
-  { name: "Ambräusianum",       beer: "Hausbier 0.5L",         price: 4.80, approx: true,  maps: "https://maps.google.com/?q=Ambr%C3%A4usianum+Bamberg" },
+  { name: "Keesmann Bräu",      beer: "Herren Pils 0.5L",      price: 3.90, approx: true,  maps: "https://maps.google.com/?q=Keesmann+Br%C3%A4u+Bamberg",       lat: 49.8968, lng: 10.9036 },
+  { name: "Mahr's Bräu",        beer: "Ungespundetes 0.5L",    price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Mahr%27s+Br%C3%A4u+Bamberg",       lat: 49.8953, lng: 10.9112 },
+  { name: "Spezial",            beer: "Rauchbier Lager 0.5L",  price: 4.10, approx: true,  maps: "https://maps.google.com/?q=Brauerei+Spezial+Bamberg",          lat: 49.8988, lng: 10.8982 },
+  { name: "Fässla Brauerei",    beer: "Lagerbier 0.5L",        price: 4.20, approx: true,  maps: "https://maps.google.com/?q=F%C3%A4ssla+Brauerei+Bamberg",      lat: 49.8992, lng: 10.8977 },
+  { name: "Schlenkerla",        beer: "Rauchbier Märzen 0.5L", price: 4.30, approx: false, maps: "https://maps.google.com/?q=Schlenkerla+Bamberg",               lat: 49.8981, lng: 10.8974 },
+  { name: "Klosterbräu",        beer: "Lagerbier 0.5L",        price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Klosterbraeu+Bamberg",              lat: 49.9001, lng: 10.8946 },
+  { name: "Greifenklau Keller", beer: "Kellerbier 0.5L",       price: 4.40, approx: true,  maps: "https://maps.google.com/?q=Greifenklau+Keller+Bamberg",        lat: 49.9024, lng: 10.8933 },
+  { name: "Ambräusianum",       beer: "Hausbier 0.5L",         price: 4.80, approx: true,  maps: "https://maps.google.com/?q=Ambr%C3%A4usianum+Bamberg",         lat: 49.8979, lng: 10.8978 },
 ];
 
 const i18n = {
@@ -142,23 +189,53 @@ const i18n = {
     subtitle: "En ucuzdan en pahalıya",
     col_place: "Mekan", col_price: "Fiyat",
     note: "~ işaretli fiyatlar tahminidir. Doğrulamak için mekana sorun.",
+    btn_list: "📋 Liste",
+    btn_map: "🗺 Harita",
+    rank_label: "Sıra",
+    maps_link: "Google Maps'te aç",
   },
   en: {
     title: "Bamberg Cheapest Beer",
     subtitle: "Cheapest to most expensive",
     col_place: "Pub", col_price: "Price",
     note: "Prices marked ~ are estimates. Verify on-site.",
+    btn_list: "📋 List",
+    btn_map: "🗺 Map",
+    rank_label: "Rank",
+    maps_link: "Open in Google Maps",
   },
   de: {
     title: "Bamberg Günstigstes Bier",
     subtitle: "Günstig bis teuer",
     col_place: "Lokal", col_price: "Preis",
     note: "Mit ~ markierte Preise sind Schätzungen. Vor Ort prüfen.",
+    btn_list: "📋 Liste",
+    btn_map: "🗺 Karte",
+    rank_label: "Rang",
+    maps_link: "In Google Maps öffnen",
   }
 };
 
+let currentLang = 'tr';
+let map = null;
+
+const sorted = [...places].sort((a, b) => a.price - b.price);
+const minPrice = sorted[0].price;
+const maxPrice = sorted[sorted.length - 1].price;
+const priceRange = maxPrice - minPrice || 1;
+
+function markerRadius(price) {
+  // cheapest = biggest (32), most expensive = smallest (14)
+  return 32 - ((price - minPrice) / priceRange) * 18;
+}
+
+function markerColor(rank) {
+  // rank 0 = gold, increases toward gray
+  const colors = ['#f5c842','#d4a830','#b89025','#9a781c','#7e6014','#644a0e','#4e3808','#3a2a04'];
+  return colors[Math.min(rank, colors.length - 1)];
+}
+
 function renderList() {
-  const sorted = [...places].sort((a, b) => a.price - b.price);
   document.getElementById('list').innerHTML = sorted.map((p, i) => `
     <div class="item">
       <span class="rank">${i + 1}.</span>
@@ -171,11 +248,76 @@ function renderList() {
   `).join('');
 }
 
+function initMap() {
+  if (map) return;
+  map = L.map('map', { zoomControl: true }).setView([49.8985, 10.8990], 15);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://carto.com/">CARTO</a> &amp; OpenStreetMap contributors',
+    maxZoom: 19
+  }).addTo(map);
+
+  sorted.forEach((p, i) => {
+    const r = markerRadius(p.price);
+    const color = markerColor(i);
+    const t = i18n[currentLang];
+
+    const circle = L.circleMarker([p.lat, p.lng], {
+      radius: r,
+      fillColor: color,
+      color: '#1c1000',
+      weight: 2,
+      fillOpacity: 0.88,
+    }).addTo(map);
+
+    circle.bindPopup(`
+      <div class="popup-name">${p.name}</div>
+      <div class="popup-beer">${p.beer}</div>
+      <div class="popup-price ${p.approx ? 'approx' : ''}">${p.approx ? '~' : ''}€${p.price.toFixed(2)}</div>
+      <div class="popup-rank">${t.rank_label}: #${i + 1}</div>
+      <a class="popup-maps" href="${p.maps}" target="_blank" rel="noopener">${t.maps_link} ↗</a>
+    `);
+
+    // rank label on marker
+    circle.on('add', () => {
+      const label = L.divIcon({
+        className: '',
+        html: `<div style="color:#111;font-weight:bold;font-size:${r > 22 ? 13 : 11}px;text-align:center;line-height:1;pointer-events:none;">${i+1}</div>`,
+        iconSize: [r * 2, r * 2],
+        iconAnchor: [r, r],
+      });
+      L.marker([p.lat, p.lng], { icon: label, interactive: false }).addTo(map);
+    });
+  });
+}
+
+function setView(view) {
+  const listEl = document.getElementById('list-view');
+  const mapEl = document.getElementById('map-view');
+  const btnList = document.getElementById('btn-list');
+  const btnMap = document.getElementById('btn-map');
+
+  if (view === 'map') {
+    listEl.style.display = 'none';
+    mapEl.classList.add('visible');
+    btnList.classList.remove('active');
+    btnMap.classList.add('active');
+    initMap();
+    setTimeout(() => map && map.invalidateSize(), 100);
+  } else {
+    mapEl.classList.remove('visible');
+    listEl.style.display = 'block';
+    btnList.classList.add('active');
+    btnMap.classList.remove('active');
+  }
+}
+
 function setLang(lang) {
+  currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+    if (i18n[lang][key] !== undefined) el.textContent = i18n[lang][key];
   });
   document.documentElement.lang = lang;
 }
